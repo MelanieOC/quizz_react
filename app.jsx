@@ -93,14 +93,16 @@ class Application extends React.Component {
         correctas: this.state.correctas + 1
       })
     }
-    console.log(this.state.correctas);
-    this.siguiente();
+    let t = setTimeout(()=>{
+      this.siguiente();
+    }, 900);
+    
   }
   opciones(opciones) {
     return Object.keys(opciones).map((key, index) => {
       let value = opciones[key];
-      return (<div className='col-md-4'>
-        <button className="btn" key={index} onClick={(e) => this.guardarRespuesta(e.currentTarget, value)}><span className='letra'>{key}</span>{value}</button>
+      return (<div className={this.state.respuestas[this.state.contar]==value?'col-md-4 seleccionado':'col-md-4'}>
+        <button className='btn' key={index} onClick={(e) => this.guardarRespuesta(e.currentTarget, value)}><span className='letra'>{key}</span>{value}</button>
       </div>);
     })
   }
