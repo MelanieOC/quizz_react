@@ -30,64 +30,109 @@ let preguntas = [
     imagen: 'assets/img/car.svg'
   }
 ]
+const RedesSociales = () => {
+  return (
+    <div id="redesSociales" className="text-center">
+      <a href="#" className="fa-stack fa-lg" style={{ color: '#00C3FF' }}>
+        <i className="fa fa-circle fa-stack-2x"></i>
+        <i className="fa fa-twitter fa-stack-1x fa-inverse"></i>
+      </a>
+      <a href="#" className="fa-stack fa-lg">
+        <i className="fa fa-circle fa-stack-2x" style={{ color: '#23239B' }}></i>
+        <i className="fa fa-facebook fa-stack-1x fa-inverse"></i>
+      </a>
+      <a href="#" className="fa-stack fa-lg">
+        <i className="fa fa-circle fa-stack-2x" style={{ color: 'red' }}></i>
+        <i className="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+      </a>
+    </div>
+  );
+}
 class Application extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
       contar: 0,
-      progreso:0,
-      searchTerm: 'laboratoria',
-      selectedVideo: null
+      respuestas: [],
+      completo: false
     }
   }
-  siguiente(){
+  siguiente() {
+    if (this.state.contar === preguntas.length - 1) {
+      this.setState({
+        completo: true
+      });
+    }
     this.setState({
-      contar: this.state.contar + 1,
+      contar: this.state.contar + 1
     })
+    console.log(this.state.respuestas)
+  }
+  guardarRespuesta(evento, value) {
+    let res = this.state.respuestas;
+    res[this.state.contar] = value;
+    this.setState({
+      respuestas: res
+    })
+    this.siguiente();
   }
   opciones(opciones) {
     return Object.keys(opciones).map((key, index) => {
       let value = opciones[key];
       return (<div className='col-md-4'>
-        <button className="btn" key={key} onClick={()=>this.siguiente()}><span className='letra'>{key}</span>{value}</button>
+        <button className="btn" key={index} onClick={(e) => this.guardarRespuesta(e.currentTarget, value)}><span className='letra'>{key}</span>{value}</button>
       </div>);
     })
   }
+  preguntas() {
+    return (
+      <div>
+        <h1 className="text-center"> {preguntas[this.state.contar].pregunta} </h1>
+        <div className="opciones row">
+          {this.opciones(preguntas[this.state.contar].opciones)}
+        </div>
+      </div>
+    );
+  }
+  listarRespuestas() {
+    return (
+      <div id='respuestas'>
+        <h1 class="text-center">Here are your answer:</h1>
+        {this.state.respuestas.map((a, i) => {
+          return (
+            <p>{i + 1}. {preguntas[i].pregunta}<strong>{a}</strong></p>
+          );
+        })
+        }
+        <button className='btn-lg btn-dark' onClick={this.comparar()}></button>
+      </div>
+    );
+
+  }
+
   render() {
     return (
       <div className="container">
         <header className="text-center">
-          <img src={preguntas[this.state.contar].imagen} />
+          {!this.state.completo && <img src={preguntas[this.state.contar].imagen} />}
+          {this.state.completo && <img src="assets/img/truck.svg" />}
         </header>
         <div className="content">
           <div id="progreso">
-            <div className="progress-label"></div>
+            <div className="progress-label">
+              {this.state.contar} of {preguntas.length} answered
+            </div>
             <div className="progress">
-              <div className="progress-bar" role="progressbar" aria-valuemax="100" style={{ width:`${this.state.progreso}%`, height: '5px' }}>
+              <div className="progress-bar" role="progressbar" aria-valuemax="100" style={{ width: this.state.contar * 20 + '%', height: '5px' }}>
               </div>
             </div>
           </div>
           <div id="prueba">
-            <h1 className="text-center"> {preguntas[this.state.contar].pregunta} </h1>
-            <div className="opciones row">
-              {this.opciones(preguntas[this.state.contar].opciones)}
-            </div>
+            {!this.state.completo && this.preguntas()}
+            {this.state.completo && this.listarRespuestas()}
           </div>
-          <div id="redesSociales" className="text-center">
-            <a href="#" className="fa-stack fa-lg" style={{ color: '#00C3FF' }}>
-              <i className="fa fa-circle fa-stack-2x"></i>
-              <i className="fa fa-twitter fa-stack-1x fa-inverse"></i>
-            </a>
-            <a href="#" className="fa-stack fa-lg">
-              <i className="fa fa-circle fa-stack-2x" style={{ color: '#23239B' }}></i>
-              <i className="fa fa-facebook fa-stack-1x fa-inverse"></i>
-            </a>
-            <a href="#" className="fa-stack fa-lg">
-              <i className="fa fa-circle fa-stack-2x" style={{ color: 'red' }}></i>
-              <i className="fa fa-google-plus fa-stack-1x fa-inverse"></i>
-            </a>
-          </div>
+          <RedesSociales />
         </div>
         <div id="flechas" className="text-center">
           <button id="anterior" className="btn disabled">
