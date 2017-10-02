@@ -109,7 +109,7 @@ class Application extends React.Component {
       <div id='respuestas'>
         <h1 className="text-center">
           {!this.state.comparar && 'Here are you answers:'}
-          {this.state.comparar && this.state.correctas + 'out of ' + preguntas.length + ' correct!'}
+          {this.state.comparar && this.state.correctas + ' out of ' + preguntas.length + ' correct!'}
         </h1>
         {this.state.respuestas.map((a, i) => {
           if (a == preguntas[i].respuesta && this.state.comparar) {
@@ -140,6 +140,15 @@ class Application extends React.Component {
   comparar() {
     this.setState({
       comparar: true
+    });
+  }
+  reiniciar(){
+    this.setState({
+      contar: 0,
+      respuestas: [],
+      correctas: 0,
+      completo: false,
+      comparar: false
     });
   }
   render() {
