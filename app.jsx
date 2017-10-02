@@ -188,7 +188,7 @@ class Application extends React.Component {
           </div>
           <RedesSociales />
         </div>
-        {!this.state.comparar &&
+        {!this.state.comparar && this.state.respuestas.length != 0 &&
           <div id="flechas" className="text-center">
             <button id="anterior" className={this.state.respuestas.length>=this.state.contar&&this.state.contar?'btn':"btn disabled"} onClick={()=>this.anterior()}>
               <img className="img-responsive" src="assets/img/navigation-left-arrow.svg" alt="" />
