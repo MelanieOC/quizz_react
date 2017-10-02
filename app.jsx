@@ -37,8 +37,7 @@ class Application extends React.Component {
     this.state = {
       contar: 0,
       progreso:0,
-      searchTerm: 'laboratoria',
-      selectedVideo: null
+      respuestas:null
     }
   }
   siguiente(){
@@ -46,11 +45,14 @@ class Application extends React.Component {
       contar: this.state.contar + 1,
     })
   }
+  guardarRespesta(){
+    
+  }
   opciones(opciones) {
-    return Object.keys(opciones).map((key, index) => {
+    return Object.keys(opciones).map(key => {
       let value = opciones[key];
       return (<div className='col-md-4'>
-        <button className="btn" key={key} onClick={()=>this.siguiente()}><span className='letra'>{key}</span>{value}</button>
+        <button className="btn" key={key} onClick={()=>this.guardarRespesta()}><span className='letra'>{key}</span>{value}</button>
       </div>);
     })
   }
