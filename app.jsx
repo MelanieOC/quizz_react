@@ -56,6 +56,7 @@ class Application extends React.Component {
     this.state = {
       contar: 0,
       respuestas: [],
+      correctas: 0,
       completo: false,
       comparar: false
     }
@@ -69,7 +70,7 @@ class Application extends React.Component {
     this.setState({
       contar: this.state.contar + 1
     })
-    console.log(this.state.respuestas)
+
   }
   guardarRespuesta(evento, value) {
     let res = this.state.respuestas;
@@ -77,6 +78,12 @@ class Application extends React.Component {
     this.setState({
       respuestas: res
     })
+    if (value == preguntas[this.state.contar].respuesta) {
+      this.setState({
+        correctas: this.state.correctas + 1
+      })
+    }
+    console.log(this.state.correctas);
     this.siguiente();
   }
   opciones(opciones) {
@@ -100,7 +107,10 @@ class Application extends React.Component {
   listarRespuestas() {
     return (
       <div id='respuestas'>
-        <h1 class="text-center">Here are your answers:</h1>
+        <h1 className="text-center">
+          {!this.state.comparar && 'Here are you answers:'}
+          {this.state.comparar && this.state.correctas + 'out of ' + preguntas.length + ' correct!'}
+        </h1>
         {this.state.respuestas.map((a, i) => {
           if (a == preguntas[i].respuesta && this.state.comparar) {
             return <p className="text-success">{i + 1}. {preguntas[i].pregunta}<strong>{a}</strong></p>
@@ -111,8 +121,11 @@ class Application extends React.Component {
           }
         })
         }
-        {this.state.comparar && <button className='btn-lg btn-dark' onClick={() => this.reiniciar()}>Start Again</button>}
-        {!this.state.comparar && <button className='btn-lg btn-dark' onClick={() => this.comparar()}>Submit</button>}
+        <div className='text-center'>
+          {this.state.comparar && <button className='btn-lg btn-dark' onClick={() => this.reiniciar()}>Start Again</button>}
+          {!this.state.comparar && <button className='btn-lg btn-dark' onClick={() => this.comparar()}>Submit</button>}
+        </div>
+
       </div>
     );
 
