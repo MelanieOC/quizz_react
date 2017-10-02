@@ -72,6 +72,16 @@ class Application extends React.Component {
     })
 
   }
+  anterior(){
+    if (this.state.contar === preguntas.length) {
+      this.setState({
+        completo: false
+      });
+    }
+    this.setState({
+      contar: this.state.contar - 1
+    })
+  }
   guardarRespuesta(evento, value) {
     let res = this.state.respuestas;
     res[this.state.contar] = value;
@@ -162,7 +172,7 @@ class Application extends React.Component {
           {!this.state.comparar &&
             <div id="progreso">
               <div className="progress-label">
-                {this.state.contar} of {preguntas.length} answered
+                {this.state.respuestas.length} of {preguntas.length} answered
             </div>
               <div className="progress">
                 <div className="progress-bar" role="progressbar" aria-valuemax="100" style={{ width: this.state.respuestas.length * 20 + '%', height: '5px' }}>
@@ -178,10 +188,10 @@ class Application extends React.Component {
         </div>
         {!this.state.comparar &&
           <div id="flechas" className="text-center">
-            <button id="anterior" className="btn disabled">
+            <button id="anterior" className={this.state.respuestas.length>=this.state.contar&&this.state.contar?'btn':"btn disabled"} onClick={()=>this.anterior()}>
               <img className="img-responsive" src="assets/img/navigation-left-arrow.svg" alt="" />
             </button>
-            <button id="siguiente" className="btn disabled">
+            <button id="siguiente" className={this.state.respuestas.length>this.state.contar?'btn':"btn disabled"} onClick={()=>this.siguiente()}>
               <img className="img-responsive" src="assets/img/navigation-right-arrow.svg" alt="" />
             </button>
           </div>
